@@ -15,7 +15,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageview_wallpaper"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
             tools:src="@drawable/ic_launcher_background" />
@@ -28,6 +28,16 @@
             android:layout_gravity="bottom|center"
             android:gravity="center|bottom"
             tools:text="jnjkabscj" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageview_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_menu"
+            android:layout_gravity="end|top"
+            android:layout_margin="@dimen/spacing_2x"
+            android:tint="@color/primaryTextColor"
+            android:padding="@dimen/spacing_2x"/>
 
     </FrameLayout>
 

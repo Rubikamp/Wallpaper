@@ -26,6 +26,8 @@
         <activity android:name=".fragments.LifecycleActivity"
             android:exported="true">
         </activity>
+
     </application>
+
 
 </manifest>

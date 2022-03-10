@@ -1,9 +1,13 @@
 package org.rubikamp.wallpaper.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,12 +18,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import org.rubikamp.wallpaper.R;
 import org.rubikamp.wallpaper.adapter.WallpaperAdapter;
 import org.rubikamp.wallpaper.databinding.FragmentHomeBinding;
+import org.rubikamp.wallpaper.dialog.DeleteBottomSheetDialog;
 import org.rubikamp.wallpaper.model.WallpaperModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItemClickListener {
+public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItemClickListener, WallpaperAdapter.SetOnMenuClickListener {
 
     private FragmentHomeBinding binding;
     private WallpaperAdapter wallpaperAdapter;
@@ -40,7 +45,7 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
     }
 
     private void setuprecyclerview() {
-        wallpaperAdapter = new WallpaperAdapter(setListData(), this);
+        wallpaperAdapter = new WallpaperAdapter(setListData(), this, this);
         binding.recyclerviewWallpaper.setHasFixedSize(true);
 //        binding.recyclerviewWallpaper.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 //        binding.recyclerviewWallpaper.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -71,4 +76,51 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
         bundle.putSerializable("WALLPAPER_MODEL", wallpaperModel);
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_nav_home_to_detailsFragment, bundle);
     }
+
+    @Override
+    public void MenuClicked(View view) {
+        showPopupMenu(view);
+    }
+
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.delete:
+                    showDeleteBottomSheet();
+                    break;
+
+                case R.id.set_wallpaper:
+                    showDialogSetAsWallpaper();
+                    break;
+            }
+
+            return true;
+        });
+        popupMenu.show();
+    }
+
+    private void showDeleteBottomSheet() {
+        DeleteBottomSheetDialog bottomSheetDialog = new DeleteBottomSheetDialog();
+        bottomSheetDialog.show(getChildFragmentManager(), "DELETE_BOTTOM_SHEET_DIALOG");
+    }
+
+    private void showDialogSetAsWallpaper() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle(getString(R.string.wallpaper_title));
+        alertDialog.setMessage(R.string.dialog_message);
+        alertDialog.setPositiveButton("YES", (dialogInterface, i) -> setAsWallpaper());
+
+        alertDialog.setNegativeButton("NO", (dialogInterface, i) -> dialogInterface.cancel());
+
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
+    }
+
+    private void  setAsWallpaper(){
+        Toast.makeText(getContext(), "YESSSS", Toast.LENGTH_SHORT).show();
+    }
+
 }

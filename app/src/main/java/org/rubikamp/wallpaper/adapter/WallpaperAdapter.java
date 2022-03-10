@@ -20,21 +20,25 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.Wall
 
     private List<WallpaperModel> wallpaperModelList;
     public SetOnItemClickListener listener;
+    public SetOnMenuClickListener menuClickListener;
 
-    public WallpaperAdapter(List<WallpaperModel> wallpaperModelList, SetOnItemClickListener listener) {
+    public WallpaperAdapter(List<WallpaperModel> wallpaperModelList, SetOnItemClickListener listener, SetOnMenuClickListener menuClickListener) {
         this.wallpaperModelList = wallpaperModelList;
         this.listener = listener;
+        this.menuClickListener = menuClickListener;
     }
 
     public static class WallpaperViewHolder extends RecyclerView.ViewHolder {
 
         private AppCompatTextView textViewWallpaper;
         private AppCompatImageView imageviewWallpaper;
+        private AppCompatImageView imageMenu;
 
         public WallpaperViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewWallpaper = itemView.findViewById(R.id.textview_wallpaper);
             imageviewWallpaper = itemView.findViewById(R.id.imageview_wallpaper);
+            imageMenu = itemView.findViewById(R.id.imageview_menu);
 
         }
     }
@@ -51,6 +55,9 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.Wall
         Glide.with(holder.itemView.getContext()).load(wallpaperModel.getWallpaperImage()).into(holder.imageviewWallpaper);
         holder.textViewWallpaper.setText(wallpaperModel.getWallpaperName());
         holder.itemView.setOnClickListener(view -> listener.ItemClicked(wallpaperModel));
+        holder.imageMenu.setOnClickListener(view -> {
+            menuClickListener.MenuClicked(holder.imageMenu);
+        });
     }
 
     @Override
@@ -62,4 +69,7 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.Wall
         void ItemClicked(WallpaperModel wallpaperModel);
     }
 
+    public interface SetOnMenuClickListener {
+        void MenuClicked(View view);
+    }
 }

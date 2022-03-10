@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupWithNavController(binding.navigationView, navController);
         binding.navigationView.setNavigationItemSelectedListener(this);
 
+
     }
 
     private void setupBottomNav() {
