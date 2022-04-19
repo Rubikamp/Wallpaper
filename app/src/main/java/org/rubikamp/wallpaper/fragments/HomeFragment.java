@@ -1,6 +1,8 @@
 package org.rubikamp.wallpaper.fragments;
 
 import android.app.AlertDialog;
+import android.app.WallpaperManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +16,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import org.rubikamp.wallpaper.R;
 import org.rubikamp.wallpaper.adapter.WallpaperAdapter;
 import org.rubikamp.wallpaper.databinding.FragmentHomeBinding;
 import org.rubikamp.wallpaper.dialog.DeleteBottomSheetDialog;
 import org.rubikamp.wallpaper.model.WallpaperModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +36,7 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
     private WallpaperAdapter wallpaperAdapter;
     private int position;
     private DeleteBottomSheetDialog bottomSheetDialog;
+    private List<WallpaperModel> listItem;
 
 
     @Override
@@ -56,7 +64,7 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
 
 
     private List<WallpaperModel> setListData() {
-        List<WallpaperModel> listItem = new ArrayList<>();
+        listItem = new ArrayList<>();
         listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "First Item"));
         listItem.add(new WallpaperModel("https://images.unsplash.com/photo-1542550371427-311e1b0427cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTB8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60", "Second Item"));
         listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "Third Item"));
@@ -122,10 +130,27 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
     }
 
     private void setAsWallpaper() {
-        Toast.makeText(getContext(), "YESSSS", Toast.LENGTH_SHORT).show();
+        Glide.with(requireContext())
+                .asBitmap()
+                .load(listItem.get(position).getWallpaperImage())
+                .into(new SimpleTarget<Bitmap>() {
+
+
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        try {
+                            WallpaperManager.getInstance(requireContext()).setBitmap(resource);
+                            Toast.makeText(requireContext(), "Set Wallpaper Success", Toast.LENGTH_SHORT).show();
+                            requireActivity().finish();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(requireContext(), "Set Wallpaper error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                });
     }
 
-    @Override
     public void onItemDelete() {
         wallpaperAdapter.deleteItem(position);
         bottomSheetDialog.dismiss();

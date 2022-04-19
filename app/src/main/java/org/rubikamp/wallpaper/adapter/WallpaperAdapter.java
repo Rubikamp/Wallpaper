@@ -66,7 +66,7 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.Wall
     }
 
     public interface SetOnItemClickListener {
-        void ItemClicked(WallpaperModel wallpaperModel , int position);
+        void ItemClicked(WallpaperModel wallpaperModel , int position );
     }
 
     public interface SetOnMenuClickListener {
