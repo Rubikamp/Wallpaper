@@ -54,7 +54,7 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.Wall
         WallpaperModel wallpaperModel = wallpaperModelList.get(position);
         Glide.with(holder.itemView.getContext()).load(wallpaperModel.getWallpaperImage()).into(holder.imageviewWallpaper);
         holder.textViewWallpaper.setText(wallpaperModel.getWallpaperName());
-        holder.itemView.setOnClickListener(view -> listener.ItemClicked(wallpaperModel));
+        holder.itemView.setOnClickListener(view -> listener.ItemClicked(wallpaperModel , position));
         holder.imageMenu.setOnClickListener(view -> {
             menuClickListener.MenuClicked(holder.imageMenu);
         });
@@ -66,10 +66,16 @@ public class WallpaperAdapter extends RecyclerView.Adapter<WallpaperAdapter.Wall
     }
 
     public interface SetOnItemClickListener {
-        void ItemClicked(WallpaperModel wallpaperModel);
+        void ItemClicked(WallpaperModel wallpaperModel , int position);
     }
 
     public interface SetOnMenuClickListener {
         void MenuClicked(View view);
+    }
+
+    public void deleteItem(int position) {
+        wallpaperModelList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
     }
 }

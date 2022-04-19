@@ -1,7 +1,6 @@
 package org.rubikamp.wallpaper.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +23,12 @@ import org.rubikamp.wallpaper.model.WallpaperModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItemClickListener, WallpaperAdapter.SetOnMenuClickListener {
+public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItemClickListener, WallpaperAdapter.SetOnMenuClickListener, DeleteBottomSheetDialog.OnDeleteItemListener {
 
     private FragmentHomeBinding binding;
     private WallpaperAdapter wallpaperAdapter;
+    private int position;
+    private DeleteBottomSheetDialog bottomSheetDialog;
 
 
     @Override
@@ -71,7 +72,8 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
     }
 
     @Override
-    public void ItemClicked(WallpaperModel wallpaperModel) {
+    public void ItemClicked(WallpaperModel wallpaperModel, int position) {
+        this.position = position;
         Bundle bundle = new Bundle();
         bundle.putSerializable("WALLPAPER_MODEL", wallpaperModel);
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_nav_home_to_detailsFragment, bundle);
@@ -103,7 +105,7 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
     }
 
     private void showDeleteBottomSheet() {
-        DeleteBottomSheetDialog bottomSheetDialog = new DeleteBottomSheetDialog();
+        bottomSheetDialog = new DeleteBottomSheetDialog();
         bottomSheetDialog.show(getChildFragmentManager(), "DELETE_BOTTOM_SHEET_DIALOG");
     }
 
@@ -119,8 +121,14 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
         dialog.show();
     }
 
-    private void  setAsWallpaper(){
+    private void setAsWallpaper() {
         Toast.makeText(getContext(), "YESSSS", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onItemDelete() {
+        wallpaperAdapter.deleteItem(position);
+        bottomSheetDialog.dismiss();
+
+    }
 }
