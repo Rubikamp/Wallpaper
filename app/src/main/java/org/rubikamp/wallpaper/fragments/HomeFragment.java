@@ -22,6 +22,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import org.rubikamp.wallpaper.R;
 import org.rubikamp.wallpaper.adapter.WallpaperAdapter;
 import org.rubikamp.wallpaper.databinding.FragmentHomeBinding;
@@ -38,6 +42,8 @@ public class HomeFragment extends Fragment implements WallpaperAdapter.SetOnItem
     private WallpaperAdapter wallpaperAdapter;
     private int position;
 private DeleteBottomSheetDialog bottomSheetDialog;
+    List<WallpaperModel> listItem;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,16 +65,16 @@ private DeleteBottomSheetDialog bottomSheetDialog;
 
     }
     private List<WallpaperModel> setListData() {
-        List<WallpaperModel> listItem = new ArrayList<>();
-        listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "First Item"));
-        listItem.add(new WallpaperModel("https://images.unsplash.com/photo-1542550371427-311e1b0427cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTB8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60", "Second Item"));
-        listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "Third Item"));
-        listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "Fourth Item"));
-        listItem.add(new WallpaperModel("https://images.unsplash.com/photo-1542466500-dccb2789cbbb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTZ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60", "Fifth Item"));
-        listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "Sixth Item"));
-        listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "Seventh Item"));
-        listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "eghith Item"));
-        listItem.add(new WallpaperModel("https://media.istockphoto.com/photos/abstract-wavy-object-picture-id1198271727?b=1&k=20&m=1198271727&s=170667a&w=0&h=b626WM5c-lq9g_yGyD0vgufb4LQRX9UgYNWPaNUVses=", "ninth Item"));
+        listItem = new ArrayList<>();
+        listItem.add(new WallpaperModel("https://images.unsplash.com/photo-1542550371427-311e1b0427cc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTB8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60", "First Item"));
+        listItem.add(new WallpaperModel("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMQX3FKpxqCWFR6lqp2uXTE-khmlXtz6Xxvw&usqp=CAU", "Second Item"));
+        listItem.add(new WallpaperModel("https://images.unsplash.com/photo-1542466500-dccb2789cbbb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTZ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60", "Third Item"));
+        listItem.add(new WallpaperModel("https://images.unsplash.com/photo-1541497613813-0780960684f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80", "Fourth Item"));
+        listItem.add(new WallpaperModel("https://wallpaperaccess.com/full/1622642.jpg", "Fifth Item"));
+        listItem.add(new WallpaperModel("https://marmotamaps.com/de/fx/wallpaper/download/faszinationen/Marmotamaps_Wallpaper_Berchtesgaden_Desktop_1920x1080.jpg", "Sixth Item"));
+        listItem.add(new WallpaperModel("https://coolhdwall.com/storage/202101/astronaut-floating-space-hd-tablet-wallpaper-2048x2732.jpg", "Seventh Item"));
+        listItem.add(new WallpaperModel("https://mobimg.b-cdn.net/v3/fetch/39/39d0b1af982cfaac50af7cd0fa9fc218.jpeg", "eghith Item"));
+        listItem.add(new WallpaperModel("https://wallpaper.dog/small/20507590.png", "ninth Item"));
         listItem.add(new WallpaperModel("https://images.unsplash.com/photo-1541497613813-0780960684f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80", "ten Item"));
         return listItem;
     }
@@ -119,9 +125,24 @@ private DeleteBottomSheetDialog bottomSheetDialog;
     private void cancelMessage() {
         Toast.makeText(requireActivity(), "Cancelled!!", Toast.LENGTH_SHORT).show();
     }
-    private void setAsWallpaper() {
-        Toast.makeText(requireActivity(), "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+    public void setAsWallpaper() {
+        Glide.with(requireContext())
+                .asBitmap()
+                .load(listItem.get(position).getWallpaperImage())
+                .into(new SimpleTarget<Bitmap>() {
 
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+
+                        try {
+                            WallpaperManager.getInstance(requireContext()).setBitmap(resource);
+                            Toast.makeText(requireContext(), "Set as wallpaper is success!!", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            Toast.makeText(requireContext(), "Set as wallpaper is not success", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     @Override
